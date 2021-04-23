@@ -1,0 +1,46 @@
+<mat-card>
+      <form [formGroup]="uploadForm" (ngSubmit)="uploadSubmit()">
+        <mat-card-content>
+          <mat-form-field class="form-field">
+            <mat-label>Select Document Type</mat-label>
+            <mat-select formControlName="type" required>
+              <mat-option value="Passport">CSV</mat-option>
+              <mat-option value="Driving_license">PDF</mat-option>
+              <mat-option value="PAN">JSON</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+          <input formControlName="document" type="file" ng2FileSelect accept=".csv" [uploader]="uploader" multiple/><br/>
+          <br>
+          <div class="drop-zone">
+          <div ng2FileDrop [uploader]="uploader" class="drop-zone">
+             Drag and drop files to upload
+          </div>
+          </div>
+          <table>
+            <thead>
+            <tr>
+              <th width="90%">
+                File Name
+              </th>
+              <th width="10%">
+                Remove
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of uploader.queue">
+              <th width="90%">
+                {{ item.file.name }}({{item.file.size/1000000}} MB)
+              </th>
+              <th class="text-center" width="10%">
+                <mat-icon (click)="item.remove()">delete</mat-icon>
+              </th>
+            </tr>
+            </tbody>
+          </table>
+          <br>
+          <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Clean Data</button>
+        </mat-card-content>
+      </form>
+</mat-card>
