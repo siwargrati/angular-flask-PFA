@@ -2,11 +2,15 @@ import os
 import urllib.request
 from flask import Flask, request, redirect, jsonify
 from flask_cors import CORS, cross_origin
+from pygments import console
 from werkzeug.utils import secure_filename
+
+import csv2rdf
 import nettoyage
 from owlready2 import *
+from rdflib import Graph
 
-
+from pronto import Ontology
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -38,14 +42,13 @@ import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 import yake
+#from owlready2 import *
 
-UPLOAD_FOLDER = 'C:\\dataset'
 
+
+UPLOAD_FOLDER = 'C:\dataset'
 
 app = Flask(__name__)
-
-
-
 
 CORS(app)
 # app.secret_key = "secret key"
@@ -53,7 +56,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'csv'])
-
 
 def allowed_file(filename):
   return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -85,6 +87,7 @@ def upload_file():
       nettoyage.function1(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.function2()
       nettoyage.function3()
+      csv2rdf.csv2rdf()
       errors['message'] = 'Nettoyage effectué avec succès'
       resp = jsonify(errors)
       resp.status_code = 500
@@ -94,6 +97,8 @@ def upload_file():
       nettoyage.function1(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.function2()
       nettoyage.function3()
+      csv2rdf.csv2rdf()
+
       resp = jsonify({'message': 'Nettoyage effectué avec succès'})
       resp.status_code = 201
       return resp
@@ -101,6 +106,12 @@ def upload_file():
     resp = jsonify(errors)
     resp.status_code = 500
     return resp
+
+
+
+  #onto_path.append("C:\dataset\PersoDiagMedi.owl")
+  #onto = get_ontology("C:\dataset\PersoDiagMedi.owl")
+  #onto.load()
 
 
 if __name__ == "__main__":

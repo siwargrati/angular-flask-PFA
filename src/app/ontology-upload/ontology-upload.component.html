@@ -1,0 +1,18 @@
+<mat-card>
+      <form [formGroup]="uploadForm" (ngSubmit)="uploadSubmit()">
+        <mat-card-content>
+          <br>
+          <h3>Séléctionnez l'ontologie</h3>
+          <input formControlName="document" type="file" ng2FileSelect accept=".csv" [uploader]="uploader" multiple/><br/>
+          <br>
+          <div class="drop-zone">
+          <div ng2FileDrop [uploader]="uploader" class="drop-zone">
+             Drag and drop files to upload
+          </div>
+          </div>
+
+          <br>
+          <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Clean Data</button>
+        </mat-card-content>
+      </form>
+</mat-card>

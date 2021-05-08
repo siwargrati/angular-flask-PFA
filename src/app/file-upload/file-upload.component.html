@@ -1,6 +1,9 @@
 <mat-card>
       <form [formGroup]="uploadForm" (ngSubmit)="uploadSubmit()">
+        <div style="display: flex">
         <mat-card-content>
+         <div class="fichier">
+          <h4>Sélectionnez le fichier à nettoyer</h4>
           <mat-form-field class="form-field">
             <mat-label>Select Document Type</mat-label>
             <mat-select formControlName="type" required>
@@ -10,7 +13,7 @@
             </mat-select>
           </mat-form-field>
           <br>
-          <input formControlName="document" type="file" ng2FileSelect accept=".csv" [uploader]="uploader" multiple/><br/>
+          <input formControlName="document1" type="file" ng2FileSelect accept=".csv" [uploader]="uploader" multiple/><br/>
           <br>
           <div class="drop-zone">
           <div ng2FileDrop [uploader]="uploader" class="drop-zone">
@@ -41,6 +44,43 @@
           </table>
           <br>
           <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Clean Data</button>
+         </div>
         </mat-card-content>
+
+        <mat-card-content>
+          <div class="ontology">
+          <h4>Sélectionnez une ontologie</h4>
+          <br>
+          <input formControlName="document" type="file" ng2FileSelect accept=".owl" [uploader]="uploader1" multiple/><br/>
+          <br>
+
+
+          <table class="onto">
+            <thead>
+            <tr>
+              <th width="120%">
+                Ontology Name
+              </th>
+              <th width="10%">
+                Remove
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of uploader1.queue">
+              <th width="90%">
+                {{ item.file.name }}({{item.file.size/1000000}} MB)
+              </th>
+              <th class="text-center" width="10%">
+                <mat-icon (click)="item.remove()">delete</mat-icon>
+              </th>
+            </tr>
+            </tbody>
+          </table>
+          <br>
+          </div>
+        </mat-card-content>
+
+      </div>
       </form>
 </mat-card>

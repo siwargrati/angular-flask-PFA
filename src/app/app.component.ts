@@ -8,3 +8,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'angular-file-upload';
 }
+export class AppComponent2 {
+  title = 'angular-ontology-upload';
+}

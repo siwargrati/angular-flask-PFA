@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
-import {RouterModule} from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {FileDropDirective, FileSelectDirective} from "ng2-file-upload";
+import { OntologyUploadComponent } from './ontology-upload/ontology-upload.component';
+
+import {RouterModule} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FileDropDirective, FileSelectDirective} from 'ng2-file-upload';
 import {HttpClientModule} from "@angular/common/http";
-import {CustomMaterialModule} from "./file-upload/material.module";
+import {CustomMaterialModule} from './file-upload/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -15,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     FileUploadComponent,
     FileSelectDirective,
+    OntologyUploadComponent,
     FileDropDirective
   ],
   imports: [

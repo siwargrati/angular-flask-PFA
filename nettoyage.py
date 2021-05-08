@@ -5,6 +5,8 @@ import seaborn as sns
 # get_ipython().run_line_magic('matplotlib', 'inline')
 import tensorflow as tf
 import cufflinks as cf
+import pandas as pd  # for handling csv and csv contents
+from sklearn.feature_selection import VarianceThreshold
 
 cf.go_offline()
 cf.set_config_file(offline=False, world_readable=True)
@@ -30,6 +32,7 @@ import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 import yake
+import csv
 
 
 def function1(data_file):
@@ -71,7 +74,7 @@ def clean_text(text):
 
 def function2():
   df1['Country'] = df1['Country'].apply(clean_text)
-  df1['Country'] = df1['Country'].str.replace('\d+', ' ' , regex=True)
+  df1['Country'] = df1['Country'].str.replace('\d+', ' ', regex=True)
 
   df1.head(5)
   global nlp
@@ -208,6 +211,7 @@ class TextRank4Keyword():
 def function3():
   docs = df1.Country.values.tolist()
   str1 = ''.join(docs)
+
   text = str1
   tr4w = TextRank4Keyword()
   tr4w.analyze(text, window_size=4, lower=False)
@@ -216,6 +220,8 @@ def function3():
   text = str1
   simple_kwextractor = yake.KeywordExtractor()
   keywords = simple_kwextractor.extract_keywords(text)
+
+  # df1 = pd.DataFrame(data=keywords, index=["Country", "poids"]).transpose()
 
   for kw in keywords:
     print(kw)
@@ -230,3 +236,8 @@ def function3():
   for kw in keywords:
     print(kw)
 
+  with open('C:\dataset\output.csv', 'w') as csvfile:
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(('Country', 'Poids'))
+    for row in keywords:
+      csvwriter.writerow(row)
