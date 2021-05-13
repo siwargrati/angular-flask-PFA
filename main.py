@@ -42,11 +42,12 @@ import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 import yake
-#from owlready2 import *
 
+# from owlready2 import *
 
 
 UPLOAD_FOLDER = 'C:\dataset'
+output_file = 'C:\dataset\output4.csv'
 
 app = Flask(__name__)
 
@@ -57,6 +58,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'csv'])
 
+
 def allowed_file(filename):
   return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -64,7 +66,6 @@ def allowed_file(filename):
 @app.route('/multiple-files-upload', methods=['POST', 'GET', 'OPTIONS'])
 @cross_origin(supports_credentials=True)
 def upload_file():
-
   # if 'files[]' not in request.files:
   if 'file' not in request.files:
     resp = jsonify({'message': 'No file part in the request'})
@@ -84,22 +85,22 @@ def upload_file():
 
   if success and errors:
     for file in files:
-      nettoyage.function1(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-      nettoyage.function2()
-      nettoyage.function3()
+      nettoyage.construire_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+      nettoyage.clean()
+      nettoyage.extraction()
       csv2rdf.csv2rdf()
-      errors['message'] = 'Nettoyage effectué avec succès'
+      errors['message'] = 'Extraction effectué avec succès'
       resp = jsonify(errors)
       resp.status_code = 500
       return resp
   if success:
     for file in files:
-      nettoyage.function1(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-      nettoyage.function2()
-      nettoyage.function3()
+      nettoyage.construire_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+      nettoyage.clean()
+      nettoyage.extraction()
       csv2rdf.csv2rdf()
 
-      resp = jsonify({'message': 'Nettoyage effectué avec succès'})
+      resp = jsonify({'message': 'Extraction effectué avec succès'})
       resp.status_code = 201
       return resp
   else:
@@ -107,11 +108,9 @@ def upload_file():
     resp.status_code = 500
     return resp
 
-
-
-  #onto_path.append("C:\dataset\PersoDiagMedi.owl")
-  #onto = get_ontology("C:\dataset\PersoDiagMedi.owl")
-  #onto.load()
+  # onto_path.append("C:\dataset\PersoDiagMedi.owl")
+  # onto = get_ontology("C:\dataset\PersoDiagMedi.owl")
+  # onto.load()
 
 
 if __name__ == "__main__":

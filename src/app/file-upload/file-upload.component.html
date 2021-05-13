@@ -7,9 +7,9 @@
           <mat-form-field class="form-field">
             <mat-label>Select Document Type</mat-label>
             <mat-select formControlName="type" required>
-              <mat-option value="Passport">CSV</mat-option>
-              <mat-option value="Driving_license">PDF</mat-option>
-              <mat-option value="PAN">JSON</mat-option>
+              <mat-option value="csv">CSV</mat-option>
+              <mat-option value="pdf">PDF</mat-option>
+              <mat-option value="json">JSON</mat-option>
             </mat-select>
           </mat-form-field>
           <br>
@@ -24,10 +24,10 @@
             <thead>
             <tr>
               <th width="90%">
-                File Name
+                Nom fichier
               </th>
               <th width="10%">
-                Remove
+                Supprimer
               </th>
             </tr>
             </thead>
@@ -43,7 +43,7 @@
             </tbody>
           </table>
           <br>
-          <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Clean Data</button>
+          <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Valider</button>
          </div>
         </mat-card-content>
 

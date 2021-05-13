@@ -35,16 +35,14 @@ import yake
 import csv
 
 
-def function1(data_file):
+def construire_dataframe(data_file):
   nltk.download('stopwords')
-  # upload = FileUpload(accept='.csv', multiple=True)
-  # display(upload)
   global df1
   df1 = pd.read_csv(data_file)
   df1.head(10)
-  df1.drop(['Date', 'Link'], axis=1, inplace=True)
+  df1.drop(['Date', 'Study Link'], axis=1, inplace=True)
   df1.info()
-  df1['label'] = 'conjunctivitis'
+  df1['label'] = 'Care'
   df1.head()
   df1 = df1.reset_index(drop=True)
   global REPLACE_BY_SPACE_RE
@@ -53,7 +51,6 @@ def function1(data_file):
   BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
   global STOPWORDS
   STOPWORDS = set(stopwords.words('english'))
-  return "function 1"
 
 
 def clean_text(text):
@@ -72,9 +69,9 @@ def clean_text(text):
   return text
 
 
-def function2():
-  df1['Country'] = df1['Country'].apply(clean_text)
-  df1['Country'] = df1['Country'].str.replace('\d+', ' ', regex=True)
+def clean():
+  df1['Study'] = df1['Study'].apply(clean_text)
+  df1['Study'] = df1['Study'].str.replace('\d+', ' ', regex=True)
 
   df1.head(5)
   global nlp
@@ -208,8 +205,8 @@ class TextRank4Keyword():
     self.node_weight = node_weight
 
 
-def function3():
-  docs = df1.Country.values.tolist()
+def extraction():
+  docs = df1.Study.values.tolist()
   str1 = ''.join(docs)
 
   text = str1
@@ -221,7 +218,7 @@ def function3():
   simple_kwextractor = yake.KeywordExtractor()
   keywords = simple_kwextractor.extract_keywords(text)
 
-  # df1 = pd.DataFrame(data=keywords, index=["Country", "poids"]).transpose()
+  # df1 = pd.DataFrame(data=keywords, index=["Study", "poids"]).transpose()
 
   for kw in keywords:
     print(kw)
@@ -236,8 +233,8 @@ def function3():
   for kw in keywords:
     print(kw)
 
-  with open('C:\dataset\output.csv', 'w') as csvfile:
+  with open('C:\dataset\output3.csv', 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
-    csvwriter.writerow(('Country', 'Poids'))
+    csvwriter.writerow(('Study', 'Poids'))
     for row in keywords:
       csvwriter.writerow(row)
