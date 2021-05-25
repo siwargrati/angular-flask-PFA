@@ -85,7 +85,7 @@ def upload_file():
 
   if success and errors:
     for file in files:
-      nettoyage.construire_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+      nettoyage.create_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.clean()
       nettoyage.extraction()
       csv2rdf.csv2rdf()
@@ -95,7 +95,7 @@ def upload_file():
       return resp
   if success:
     for file in files:
-      nettoyage.construire_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+      nettoyage.create_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.clean()
       nettoyage.extraction()
       csv2rdf.csv2rdf()

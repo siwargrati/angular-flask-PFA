@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-# get_ipython().run_line_magic('matplotlib', 'inline')
 import tensorflow as tf
 import cufflinks as cf
 import pandas as pd  # for handling csv and csv contents
@@ -35,16 +34,17 @@ import yake
 import csv
 
 
-def construire_dataframe(data_file):
+def create_dataframe(data_file):
   nltk.download('stopwords')
   global df1
   df1 = pd.read_csv(data_file)
   df1.head(10)
-  df1.drop(['Date', 'Study Link'], axis=1, inplace=True)
   df1.info()
   df1['label'] = 'Care'
   df1.head()
   df1 = df1.reset_index(drop=True)
+
+def text_prepare(text):
   global REPLACE_BY_SPACE_RE
   REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|,;]')
   global BAD_SYMBOLS_RE
@@ -52,27 +52,19 @@ def construire_dataframe(data_file):
   global STOPWORDS
   STOPWORDS = set(stopwords.words('english'))
 
-
-def clean_text(text):
-  """
-        text: a string
-
-        return: modified initial string
-    """
   text = text.lower()  # lowercase text
   text = REPLACE_BY_SPACE_RE.sub(' ',
-                                 text)  # replace REPLACE_BY_SPACE_RE symbols by space in text. substitute the matched string in REPLACE_BY_SPACE_RE with space.
+                                 text)  # replace symbols by space in text.
   text = BAD_SYMBOLS_RE.sub('',
-                            text)  # remove symbols which are in BAD_SYMBOLS_RE from text. substitute the matched string in BAD_SYMBOLS_RE with nothing.
-  # text = re.sub(r'\W+', '', text)
+                            text)  # remove symbols which are in BAD_SYMBOLS_RE from text.
+  #text = re.sub(r'\W+', '', text)
   text = ' '.join(word for word in text.split() if word not in STOPWORDS)  # remove stopwors from text
   return text
 
 
 def clean():
-  df1['Study'] = df1['Study'].apply(clean_text)
-  df1['Study'] = df1['Study'].str.replace('\d+', ' ', regex=True)
-
+  df1['Study'] = df1['Study'].apply(text_prepare) # appliquer le code de text_prepare sur la colonne study du dataframe
+  df1['Study'] = df1['Study'].str.replace('\d+', ' ', regex=True) #remplacer les chiffres par des espaces
   df1.head(5)
   global nlp
   nlp = en_core_web_sm.load()
@@ -95,13 +87,13 @@ class TextRank4Keyword():
       lexeme.is_stop = True
 
   def sentence_segment(self, doc, candidate_pos, lower):
-    """Store those words only in cadidate_pos"""
+    """Store those words only in candidate_pos"""
     sentences = []
     for sent in doc.sents:
       selected_words = []
       for token in sent:
         # Store words only with cadidate POS tag
-        if token.pos_ in candidate_pos and token.is_stop is False:
+        if token.pos_ in candidate_pos and token.is_stop is False: #vérifier le type du mot et s'il est un stopword
           if lower is True:
             selected_words.append(token.text.lower())
           else:
@@ -111,7 +103,7 @@ class TextRank4Keyword():
 
   def get_vocab(self, sentences):
     """Get all tokens"""
-    vocab = OrderedDict()
+    vocab = OrderedDict() #créer dictionnaire de données vide
     i = 0
     for sentence in sentences:
       for word in sentence:
@@ -133,6 +125,7 @@ class TextRank4Keyword():
             token_pairs.append(pair)
     return token_pairs
 
+  #symmetriser la matrice avant de faire le calcul
   def symmetrize(self, a):
     return a + a.T - np.diag(a.diagonal())
 
@@ -145,7 +138,7 @@ class TextRank4Keyword():
       i, j = vocab[word1], vocab[word2]
       g[i][j] = 1
 
-    # Get Symmeric matrix
+    # Get Symmetric matrix
     g = self.symmetrize(g)
 
     # Normalize matrix by column
@@ -170,7 +163,7 @@ class TextRank4Keyword():
     # Set stop words
     self.set_stopwords(stopwords)
 
-    # Pare text by spaCy
+    # Tokeniser le text
     doc = nlp(text)
 
     # Filter sentences

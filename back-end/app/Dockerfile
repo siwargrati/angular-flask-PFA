@@ -1,8 +1,7 @@
 FROM python:3.8
-COPY . /app
-WORKDIR /app
-RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev
+COPY . /back-end/app
+WORKDIR /back-end/app
 RUN pip install -r requirements.txt
 ENTRYPOINT ["python"]
-cmd python app.py
+cmd python ./back-end/app/app.py
 

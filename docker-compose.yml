@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  app:
+    build: ./back-end/app
+    links:
+      - db
+    ports:
+      - "5000:5000"
+
+  db:
+    image: mysql:5.7.34
+    ports:
+      - "30000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./back-end/db:/docker-entrypoint-initdb.d/:ro
+
+  similarity:
+    build: ./back-end/similarity
+    links:
+      - db
+    ports:
+      - "5001:5001"

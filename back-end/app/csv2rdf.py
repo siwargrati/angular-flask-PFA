@@ -1,12 +1,9 @@
 import csv
 from rdflib import Graph, Literal, Namespace, URIRef
 
-# Only modify these variables when using as a normal user-----------------------------------------------------------
-
 def csv2rdf():
   input_file = list(csv.reader(open('C:\dataset\output4.csv')))
 
-  # When left blank all entities will be of type owl:thing or add type relations when a csv header is "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" the subjects will then be assigned the values in this column as object
   subjectsClassName = "pfa"
 
   prefix = ("http://example.com/pfa2021/")
@@ -22,8 +19,8 @@ def csv2rdf():
   rowIndex = 0
   for row in input_file:
     colIndex = 0
-    subj = URIRef(row[0])
-    # add class to all if wanted
+    subj = URIRef(row[0]) #fixer le subject à la premiére colonne de chaque ligne
+
     if subjectsClassName != "":
       g.add((subj, URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), URIRef(prefix + subjectsClassName)))
       g.add((URIRef(prefix + subjectsClassName), URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#subClassOf"),
@@ -32,7 +29,7 @@ def csv2rdf():
       g.add(
         (subj, URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), URIRef("http://www.w3.org/2002/07/owl#Thing")))
 
-    # First row
+    #première ligne
     if rowIndex == 0:
       colIndex2 = 0
       for colVal in row:
