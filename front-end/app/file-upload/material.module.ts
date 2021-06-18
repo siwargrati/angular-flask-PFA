@@ -6,7 +6,7 @@ import {
   MatDialogModule, MatPaginatorModule, MatSortModule,
   MatTableModule, MatNativeDateModule, MatIconModule, MatOptionModule, MatSelectModule, MatMenuModule,
   MatFormFieldModule, MatChipsModule, MatAutocompleteModule, MatDividerModule, MatGridListModule, MatGridList,
-  MatGridTile, MatSidenavModule, MatListModule, MatRadioModule, MatSliderModule
+  MatGridTile, MatSidenavModule, MatListModule, MatRadioModule, MatSliderModule,
 } from '@angular/material';
 
 @NgModule({

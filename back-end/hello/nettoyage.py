@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow as tf
 import cufflinks as cf
-import pandas as pd  # for handling csv and csv contents
 from sklearn.feature_selection import VarianceThreshold
 
 cf.go_offline()
@@ -21,7 +20,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from ipywidgets import FileUpload
 from IPython.display import display
 import nltk
-import spacy
+#import spacy
 from spacy import displacy
 from collections import Counter
 import en_core_web_sm
@@ -51,12 +50,9 @@ def text_prepare(text):
   BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
   global STOPWORDS
   STOPWORDS = set(stopwords.words('english'))
-
   text = text.lower()  # lowercase text
-  text = REPLACE_BY_SPACE_RE.sub(' ',
-                                 text)  # replace symbols by space in text.
-  text = BAD_SYMBOLS_RE.sub('',
-                            text)  # remove symbols which are in BAD_SYMBOLS_RE from text.
+  text = REPLACE_BY_SPACE_RE.sub(' ',text)  # replace symbols by space in text.
+  text = BAD_SYMBOLS_RE.sub('',text)  # remove symbols which are in BAD_SYMBOLS_RE from text.
   #text = re.sub(r'\W+', '', text)
   text = ' '.join(word for word in text.split() if word not in STOPWORDS)  # remove stopwors from text
   return text
@@ -155,32 +151,22 @@ class TextRank4Keyword():
       if i > number:
         break
 
-  def analyze(self, text,
-              candidate_pos=['NOUN', 'PROPN'],
-              window_size=4, lower=False, stopwords=list()):
+  def analyze(self, text,candidate_pos=['NOUN', 'PROPN'],window_size=4, lower=False, stopwords=list()):
     """Main function to analyze text"""
-
     # Set stop words
     self.set_stopwords(stopwords)
-
     # Tokeniser le text
     doc = nlp(text)
-
     # Filter sentences
     sentences = self.sentence_segment(doc, candidate_pos, lower)  # list of list of words
-
     # Build vocabulary
     vocab = self.get_vocab(sentences)
-
     # Get token_pairs from windows
     token_pairs = self.get_token_pairs(window_size, sentences)
-
     # Get normalized matrix
     g = self.get_matrix(vocab, token_pairs)
-
     # Initionlization for weight(pagerank value)
     pr = np.array([1] * len(vocab))
-
     # Iteration
     previous_pr = 0
     for epoch in range(self.steps):
@@ -226,7 +212,7 @@ def extraction():
   for kw in keywords:
     print(kw)
 
-  with open('C:\dataset\output3.csv', 'w') as csvfile:
+  with open('C:\dataset\output.csv', 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(('Study', 'Poids'))
     for row in keywords:

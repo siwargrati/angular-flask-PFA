@@ -5,7 +5,7 @@
          <div class="fichier">
           <h4>Sélectionnez le fichier à nettoyer</h4>
           <mat-form-field class="form-field">
-            <mat-label>Select Document Type</mat-label>
+            <mat-label>Selectionner le Type du Document</mat-label>
             <mat-select formControlName="type" required>
               <mat-option value="csv">CSV</mat-option>
               <mat-option value="pdf">PDF</mat-option>
@@ -17,7 +17,7 @@
           <br>
           <div class="drop-zone">
           <div ng2FileDrop [uploader]="uploader" class="drop-zone">
-             Drag and drop files to upload
+             Glissez vos fichiers
           </div>
           </div>
           <table>
@@ -59,10 +59,10 @@
             <thead>
             <tr>
               <th width="120%">
-                Ontology Name
+                Nom Ontologie
               </th>
               <th width="10%">
-                Remove
+                Supprimer
               </th>
             </tr>
             </thead>

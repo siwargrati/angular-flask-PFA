@@ -1,58 +1,23 @@
 import os
-import urllib.request
 from flask import Flask, request, redirect, jsonify
-from flask_cors import CORS, cross_origin
-from pygments import console
 from werkzeug.utils import secure_filename
+from flask_cors import CORS, cross_origin
 
-import csv2rdf
 import nettoyage
-from owlready2 import *
-from rdflib import Graph
 
-from pronto import Ontology
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-# get_ipython().run_line_magic('matplotlib', 'inline')
-import tensorflow as tf
 import cufflinks as cf
 
 cf.go_offline()
 cf.set_config_file(offline=False, world_readable=True)
-from sklearn.feature_extraction.text import CountVectorizer
-import io
-import time
-from io import StringIO
-import re
-from nltk.corpus import stopwords
-from PIL import *
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.feature_extraction.text import CountVectorizer
-from ipywidgets import FileUpload
-from IPython.display import display
-import nltk
-import spacy
-from spacy import displacy
-from collections import Counter
-import en_core_web_sm
-
-from collections import OrderedDict
-import numpy as np
-import spacy
-from spacy.lang.en.stop_words import STOP_WORDS
-import yake
-
-# from owlready2 import *
-
 
 UPLOAD_FOLDER = 'C:\dataset'
 output_file = 'C:\dataset\output4.csv'
+ontoo = 'ontoo'
 
 app = Flask(__name__)
 
 CORS(app)
-# app.secret_key = "secret key"
+# hello.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -88,7 +53,9 @@ def upload_file():
       nettoyage.create_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.clean()
       nettoyage.extraction()
-      csv2rdf.csv2rdf()
+      #csv2owl.write_ttl(ontoo)
+
+      #csv2rdf.csv2rdf()
       errors['message'] = 'Extraction effectué avec succès'
       resp = jsonify(errors)
       resp.status_code = 500
@@ -98,7 +65,8 @@ def upload_file():
       nettoyage.create_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.clean()
       nettoyage.extraction()
-      csv2rdf.csv2rdf()
+      #csv2rdf.csv2rdf()
+      #csv2owl.write_ttl(ontoo)
 
       resp = jsonify({'message': 'Extraction effectué avec succès'})
       resp.status_code = 201
@@ -115,3 +83,4 @@ def upload_file():
 
 if __name__ == "__main__":
   app.run()
+

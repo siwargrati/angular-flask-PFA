@@ -3,15 +3,15 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FileUploader} from 'ng2-file-upload';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-
+import {MatProgressSpinnerModule} from '@angular/material'
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent implements OnInit {
-
   uploadForm: FormGroup;
+
 
   public uploader: FileUploader = new FileUploader({
     isHTML5: true
@@ -21,7 +21,7 @@ export class FileUploadComponent implements OnInit {
     isHTML5: true
   });
 
-  title = 'Angular File Upload';
+  title = 'PFA Project';
   constructor(private fb: FormBuilder, private http: HttpClient ) { }
 
   uploadSubmit() {

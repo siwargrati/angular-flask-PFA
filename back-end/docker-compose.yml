@@ -1,0 +1,6 @@
+version: "3.8"
+services:
+  hello:
+    build: ./hello
+    ports: [ "5002:5000" ]
+
