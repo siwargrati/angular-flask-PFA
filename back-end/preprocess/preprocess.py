@@ -1,10 +1,10 @@
 import os
-from flask import Flask, request, redirect, jsonify
+from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
 
 import nettoyage
-
+import csv2rdf
 import cufflinks as cf
 
 cf.go_offline()
@@ -21,7 +21,7 @@ CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'csv'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'csv'])
 
 
 def allowed_file(filename):
@@ -53,9 +53,9 @@ def upload_file():
       nettoyage.create_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.clean()
       nettoyage.extraction()
-      #csv2owl.write_ttl(ontoo)
+      # csv2owl.write_ttl(ontoo)
 
-      #csv2rdf.csv2rdf()
+      csv2rdf.csv2rdf()
       errors['message'] = 'Extraction effectué avec succès'
       resp = jsonify(errors)
       resp.status_code = 500
@@ -65,8 +65,7 @@ def upload_file():
       nettoyage.create_dataframe(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       nettoyage.clean()
       nettoyage.extraction()
-      #csv2rdf.csv2rdf()
-      #csv2owl.write_ttl(ontoo)
+      csv2rdf.csv2rdf()
 
       resp = jsonify({'message': 'Extraction effectué avec succès'})
       resp.status_code = 201
@@ -76,11 +75,6 @@ def upload_file():
     resp.status_code = 500
     return resp
 
-  # onto_path.append("C:\dataset\PersoDiagMedi.owl")
-  # onto = get_ontology("C:\dataset\PersoDiagMedi.owl")
-  # onto.load()
-
 
 if __name__ == "__main__":
   app.run()
-

@@ -1,0 +1,15 @@
+Flask==0.10.1
+Flask-Cors==1.10.3
+scikit-learn
+spacy
+tensorflow
+pip install nltk
+python -m spacy download en
+pip install matplotlib
+pip install seaborn
+python -m pip install -U pytest
+pip install cufflinks
+pip install collections
+pip install numpy
+pip install yake
+pip install csv

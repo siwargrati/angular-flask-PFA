@@ -1,6 +1,20 @@
 version: "3.8"
 services:
-  hello:
-    build: ./hello
+  preprocess:
+    build: ./preprocess
     ports: [ "5002:5000" ]
 
+
+  similarity:
+    build: ./similarity
+    ports: [ "5003:5000" ]
+
+  db:
+    image: mysql:latest
+    ports:
+      - 8083:3306
+    volumes:
+      - ./test-sql-2:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+      MYSQL_DATABASE: mysql

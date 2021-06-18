@@ -1,4 +1,4 @@
-from hello import app
+from preprocess import app
 from flaskext.mysql import MySQL
 
 mysql = MySQL()
